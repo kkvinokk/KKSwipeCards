@@ -1,0 +1,16 @@
+PODS:
+  - KKSwipeCards (0.1.0)
+
+DEPENDENCIES:
+  - KKSwipeCards (from `../`)
+
+EXTERNAL SOURCES:
+  KKSwipeCards:
+    :path: ../
+
+SPEC CHECKSUMS:
+  KKSwipeCards: 40542aed2b83a91ccfc273071485abbea0ee1911
+
+PODFILE CHECKSUM: a904f6e4ec6b2eb21fdc7da3de907290207c72a8
+
+COCOAPODS: 1.3.1
