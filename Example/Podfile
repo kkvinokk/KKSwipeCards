@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'KKSwipeCards_Example' do
+  pod 'KKSwipeCards', :path => '../'
+
+  target 'KKSwipeCards_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
