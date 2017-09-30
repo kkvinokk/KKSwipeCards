@@ -13,7 +13,7 @@ public enum SwipeMode {
     case right
 }
 
-@objc public protocol KKSwipeCardsViewDelegate: class {
+public protocol KKSwipeCardsViewDelegate: class {
     func swipedLeft(_ object: Any)
     func swipedRight(_ object: Any)
     func swipedTop(_ object: Any)
