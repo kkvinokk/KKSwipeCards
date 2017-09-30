@@ -23,58 +23,58 @@ enum SwipeSide {
 }
 
 class KKSwipeCard: UIView {
-  
+
   static let shared = KKSwipeCard()
-  
+
   weak var delegate: KKSwipeCardDelegate?
   var obj: Any!
   var leftOverlay: UIView?
   var rightOverlay: UIView?
   var swipeSide = SwipeSide.topBottom
-  
+
   private let actionMargin: CGFloat = 120.0
   private let rotationStrength: CGFloat = 320.0
   private let rotationAngle: CGFloat = CGFloat(Double.pi) / CGFloat(8.0)
   private let rotationMax: CGFloat = 1
   private let scaleStrength: CGFloat = -2
   private let scaleMax: CGFloat = 1.02
-  
+
   private var xFromCenter: CGFloat = 0.0
   private var yFromCenter: CGFloat = 0.0
   private var originalPoint = CGPoint.zero
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
+
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(dragEvent(gesture:)))
     panGesture.delegate = self
     self.addGestureRecognizer(panGesture)
-    
+
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapEvent(gesture:)))
     tapGesture.delegate = self
     self.addGestureRecognizer(tapGesture)
   }
-  
+
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   func configureOverlays() {
     self.configureOverlay(overlay: self.leftOverlay)
     self.configureOverlay(overlay: self.rightOverlay)
   }
-  
+
   private func configureOverlay(overlay: UIView?) {
     if let o = overlay {
       self.addSubview(o)
       o.alpha = 0.0
     }
   }
-  
+
   @objc func dragEvent(gesture: UIPanGestureRecognizer) {
     xFromCenter = gesture.translation(in: self).x
     yFromCenter = gesture.translation(in: self).y
-    
+
     switch gesture.state {
     case .began:
       self.originalPoint = self.center
@@ -96,14 +96,14 @@ class KKSwipeCard: UIView {
       break
     }
   }
-  
+
   @objc func tapEvent(gesture: UITapGestureRecognizer) {
     self.delegate?.cardTapped(self)
   }
-  
+
   private func afterSwipeAction() {
     let swipeSide = KKSwipeCard.shared.swipeSide
-    
+
     if yFromCenter > actionMargin, swipeSide != .leftRight {
       self.bottomAction()
     } else if yFromCenter < -actionMargin, swipeSide != .leftRight {
@@ -121,7 +121,7 @@ class KKSwipeCard: UIView {
       }
     }
   }
-  
+
   private func updateOverlay(_ distance: CGFloat) {
     var activeOverlay: UIView?
     if (distance > 0) {
@@ -131,10 +131,10 @@ class KKSwipeCard: UIView {
       self.rightOverlay?.alpha = 0.0
       activeOverlay = self.leftOverlay
     }
-    
+
     activeOverlay?.alpha = min(fabs(distance)/100, 1.0)
   }
-  
+
   private func rightAction() {
     let finishPoint = CGPoint(x: 500, y: 2 * yFromCenter + self.originalPoint.y)
     UIView.animate(withDuration: 0.3, animations: {
@@ -144,7 +144,7 @@ class KKSwipeCard: UIView {
     }
     self.delegate?.cardSwipedRight(self)
   }
-  
+
   private func leftAction() {
     let finishPoint = CGPoint(x: -500, y: 2 * yFromCenter + self.originalPoint.y)
     UIView.animate(withDuration: 0.3, animations: {
@@ -154,7 +154,7 @@ class KKSwipeCard: UIView {
     }
     self.delegate?.cardSwipedLeft(self)
   }
-  
+
   func topAction() {
     let finishPoint = CGPoint(x: 2 * xFromCenter + self.originalPoint.x, y: -1000)
     UIView.animate(withDuration: 0.3, animations: {
@@ -164,7 +164,7 @@ class KKSwipeCard: UIView {
     }
     self.delegate?.cardSwipedTop(self)
   }
-  
+
   private func bottomAction() {
     let finishPoint = CGPoint(x: 2 * xFromCenter + self.originalPoint.x, y: 1000)
     UIView.animate(withDuration: 0.3, animations: {
@@ -181,4 +181,3 @@ extension KKSwipeCard: UIGestureRecognizerDelegate {
     return false
   }
 }
-

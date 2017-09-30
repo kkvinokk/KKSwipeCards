@@ -23,15 +23,15 @@ public protocol KKSwipeCardsViewDelegate: class {
 }
 
 public class KKSwipeCardsView<Element>: UIView {
-  
+
   public weak var delegate: KKSwipeCardsViewDelegate?
   public var bufferSize: Int = 2
-  
+
   fileprivate let viewGenerator: ViewGenerator
   fileprivate let overlayGenerator: OverlayGenerator?
   var allCards = [Element]()
   var loadedCards = [KKSwipeCard]()
-  
+
   public typealias ViewGenerator = (_ element: Element, _ frame: CGRect) -> (UIView)
   public typealias OverlayGenerator = (_ element: Element, _ mode: SwipeMode, _ frame: CGRect) -> (UIView)
   public init(frame: CGRect,
@@ -42,22 +42,22 @@ public class KKSwipeCardsView<Element>: UIView {
     super.init(frame: frame)
     self.isUserInteractionEnabled = false
   }
-  
+
   override private init(frame: CGRect) {
     fatalError("Please use init(frame:,viewGenerator)")
   }
-  
+
   required public init?(coder aDecoder: NSCoder) {
     fatalError("Please use init(frame:,viewGenerator)")
   }
-  
+
   public func addCards(_ elements: [Element], onTop: Bool = false) {
     if elements.isEmpty {
       return
     }
-    
+
     self.isUserInteractionEnabled = true
-    
+
     if onTop {
       for element in elements.reversed() {
         allCards.insert(element, at: 0)
@@ -67,14 +67,14 @@ public class KKSwipeCardsView<Element>: UIView {
         allCards.append(element)
       }
     }
-    
+
     if onTop && loadedCards.count > 0 {
       for cv in loadedCards {
         cv.removeFromSuperview()
       }
       loadedCards.removeAll()
     }
-    
+
     for element in elements {
       if loadedCards.count < bufferSize {
         let cardView = self.createCardView(element: element)
@@ -87,12 +87,12 @@ public class KKSwipeCardsView<Element>: UIView {
       }
     }
   }
-  
+
   func swipeTopCardRight() {
     // TODO: not yet supported
     fatalError("Not yet supported")
   }
-  
+
   func swipeTopCardLeft() {
     // TODO: not yet supported
     fatalError("Not yet supported")
@@ -107,7 +107,7 @@ extension KKSwipeCardsView: KKSwipeCardDelegate {
       self.loadNextCard()
     }
   }
-  
+
   func cardSwipedBottom(_ card: KKSwipeCard) {
     self.handleSwipedCard(card)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
@@ -115,7 +115,7 @@ extension KKSwipeCardsView: KKSwipeCardDelegate {
       self.loadNextCard()
     }
   }
-  
+
   func cardSwipedLeft(_ card: KKSwipeCard) {
     self.handleSwipedCard(card)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
@@ -123,7 +123,7 @@ extension KKSwipeCardsView: KKSwipeCardDelegate {
       self.loadNextCard()
     }
   }
-  
+
   func cardSwipedRight(_ card: KKSwipeCard) {
     self.handleSwipedCard(card)
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
@@ -131,7 +131,7 @@ extension KKSwipeCardsView: KKSwipeCardDelegate {
       self.loadNextCard()
     }
   }
-  
+
   func cardTapped(_ card: KKSwipeCard) {
     self.delegate?.cardTapped(card.obj)
   }
@@ -146,7 +146,7 @@ extension KKSwipeCardsView {
       self.delegate?.reachedEndOfStack()
     }
   }
-  
+
   fileprivate func loadNextCard() {
     if self.allCards.count - self.loadedCards.count > 0 {
       let next = self.allCards[loadedCards.count]
@@ -156,7 +156,7 @@ extension KKSwipeCardsView {
       self.insertSubview(nextView, belowSubview: below)
     }
   }
-  
+
   fileprivate func createCardView(element: Element) -> KKSwipeCard {
     let cardView = KKSwipeCard(frame: self.bounds)
     cardView.delegate = self
