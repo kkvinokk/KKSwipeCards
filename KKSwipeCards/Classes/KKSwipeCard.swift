@@ -16,7 +16,7 @@ protocol KKSwipeCardDelegate: class {
   func cardTapped(_ card: KKSwipeCard)
 }
 
-enum SwipeSide {
+enum SwipeSide { // Delete
   case topBottom
   case leftRight
   case all
@@ -25,12 +25,14 @@ enum SwipeSide {
 class KKSwipeCard: UIView {
 
   static let shared = KKSwipeCard()
+  var swipeSide = SwipeSide.topBottom // MAke it as Static
 
   weak var delegate: KKSwipeCardDelegate?
   var obj: Any!
   var leftOverlay: UIView?
   var rightOverlay: UIView?
-  var swipeSide = SwipeSide.topBottom
+  var topOverlay: UIView?
+  var bottomOverlay: UIView?
 
   private let actionMargin: CGFloat = 120.0
   private let rotationStrength: CGFloat = 320.0
@@ -62,12 +64,14 @@ class KKSwipeCard: UIView {
   func configureOverlays() {
     self.configureOverlay(overlay: self.leftOverlay)
     self.configureOverlay(overlay: self.rightOverlay)
+    self.configureOverlay(overlay: self.topOverlay)
+    self.configureOverlay(overlay: self.bottomOverlay)
   }
 
-  private func configureOverlay(overlay: UIView?) {
-    if let o = overlay {
-      self.addSubview(o)
-      o.alpha = 0.0
+  private func configureOverlay(overlay: UIView?) { // Pass as Array
+    if let overlay = overlay {
+      self.addSubview(overlay)
+      overlay.alpha = 0.0
     }
   }
 
@@ -79,6 +83,7 @@ class KKSwipeCard: UIView {
     case .began:
       self.originalPoint = self.center
       break
+
     case .changed:
       let rStrength = min(xFromCenter / self.rotationStrength, rotationMax)
       let rAngle = self.rotationAngle * rStrength
@@ -87,11 +92,13 @@ class KKSwipeCard: UIView {
       let transform = CGAffineTransform(rotationAngle: rAngle)
       let scaleTransform = transform.scaledBy(x: scale, y: scale)
       self.transform = scaleTransform
-      self.updateOverlay(xFromCenter)
+      self.updateOverlay(xdistance: xFromCenter, ydistance: yFromCenter)
       break
+
     case .ended:
       self.afterSwipeAction()
       break
+
     default:
       break
     }
@@ -118,21 +125,40 @@ class KKSwipeCard: UIView {
         self.transform = CGAffineTransform.identity
         self.leftOverlay?.alpha = 0.0
         self.rightOverlay?.alpha = 0.0
+        self.topOverlay?.alpha = 0.0
+        self.bottomOverlay?.alpha = 0.0
       }
     }
   }
 
-  private func updateOverlay(_ distance: CGFloat) {
+  private func updateOverlay(xdistance: CGFloat, ydistance: CGFloat) {
     var activeOverlay: UIView?
-    if (distance > 0) {
-      self.leftOverlay?.alpha = 0.0
-      activeOverlay = self.rightOverlay
+    let distance: CGFloat = fabs(xdistance) - fabs(ydistance)
+    if distance > 0 {
+      if xdistance > 0 {
+        hideByAlpha(for: [leftOverlay, topOverlay, bottomOverlay])
+        activeOverlay = rightOverlay
+      } else {
+        hideByAlpha(for: [rightOverlay, topOverlay, bottomOverlay])
+        activeOverlay = leftOverlay
+      }
     } else {
-      self.rightOverlay?.alpha = 0.0
-      activeOverlay = self.leftOverlay
+      if ydistance < 0 {
+        hideByAlpha(for: [leftOverlay, topOverlay, bottomOverlay])
+        activeOverlay = topOverlay
+      } else {
+        hideByAlpha(for: [leftOverlay, topOverlay, rightOverlay])
+        activeOverlay = bottomOverlay
+      }
     }
 
     activeOverlay?.alpha = min(fabs(distance)/100, 1.0)
+  }
+
+  private func hideByAlpha(for overlays: [UIView?]) {
+    for overlay in overlays {
+      overlay?.alpha = 0
+    }
   }
 
   private func rightAction() {

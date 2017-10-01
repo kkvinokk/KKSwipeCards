@@ -11,6 +11,8 @@ import UIKit
 public enum SwipeMode {
   case left
   case right
+  case top
+  case bottom
 }
 
 public protocol KKSwipeCardsViewDelegate: class {
@@ -165,6 +167,8 @@ extension KKSwipeCardsView {
     cardView.addSubview(sv)
     cardView.leftOverlay = self.overlayGenerator?(element, .left, cardView.bounds)
     cardView.rightOverlay = self.overlayGenerator?(element, .right, cardView.bounds)
+    cardView.topOverlay = self.overlayGenerator?(element, .top, cardView.bounds)
+    cardView.bottomOverlay = self.overlayGenerator?(element, .bottom, cardView.bounds)
     cardView.configureOverlays()
     return cardView
   }
