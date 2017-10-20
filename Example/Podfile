@@ -1,6 +1,5 @@
 use_frameworks!
 
-source 'https://github.com/kkvinokk/KKSwipeCards.git' 
 platform :ios, '8.0'
 
 target 'KKSwipeCards_Example' do
