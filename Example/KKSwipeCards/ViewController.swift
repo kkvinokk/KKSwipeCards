@@ -54,7 +54,7 @@ class ViewController: UIViewController {
                                                     .right: .init(red: 78/255, green: 105/255, blue: 26/255, alpha: 0.7),
                                                     .top: .init(red: 106/255, green: 26/255, blue: 74/255, alpha: 0.7),
                                                     .bottom: .init(red: 90/255, green: 39/255, blue: 41/255, alpha: 0.7)]
-  private var previousContacts = [[String: String]]()
+  private var previousDetails = [[String: String]]()
   private var swipeView: KKSwipeCardsView<[String: String]>!
 
   override func viewDidLoad() {
@@ -131,29 +131,29 @@ class ViewController: UIViewController {
 
 extension ViewController: KKSwipeCardsViewDelegate {
   func swipedTop(_ object: Any) {
-    let contact = object as! [String: String]
-    previousContacts.insert(contact, at: 0)
+    let detail = object as! [String: String]
+    previousDetails.insert(detail, at: 0)
   }
 
   func swipedBottom(_ object: Any) {
-    let contact = object as! [String: String]
-    if previousContacts.count > 0 {
-      let previousContact = previousContacts[0]
-      previousContacts.remove(at: 0)
-      swipeView.addCards([previousContact, contact], onTop: true)
+    let detail = object as! [String: String]
+    if previousDetails.count > 0 {
+      let previousDetail = previousDetails[0]
+      previousDetails.remove(at: 0)
+      swipeView.addCards([previousDetail, detail], onTop: true)
     } else {
-      swipeView.addCards([contact], onTop: true)
+      swipeView.addCards([detail], onTop: true)
     }
   }
 
   func swipedLeft(_ object: Any) {
-    let contact = object as! [String: String]
-    previousContacts.insert(contact, at: 0)
+    let detail = object as! [String: String]
+    previousDetails.insert(detail, at: 0)
   }
 
   func swipedRight(_ object: Any) {
-    let contact = object as! [String: String]
-    previousContacts.insert(contact, at: 0)
+    let detail = object as! [String: String]
+    previousDetails.insert(detail, at: 0)
   }
 
   func cardTapped(_ object: Any) {
