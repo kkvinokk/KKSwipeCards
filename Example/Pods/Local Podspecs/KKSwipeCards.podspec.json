@@ -1,9 +1,9 @@
 {
   "name": "KKSwipeCards",
   "version": "0.1.0",
-  "summary": "A short description of KKSwipeCards.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/Vinoth Anandan/KKSwipeCards",
+  "summary": "Tinder like card interface.",
+  "description": "Written in Swift 4, supports custom views for the card and the overlay. Views get loaded lazily, so there's no issues in loading a huge amount of cards.",
+  "homepage": "https://github.com/kkvinokk/KKSwipeCards",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -12,7 +12,7 @@
     "Vinoth Anandan": "kkvinokk@gmail.com"
   },
   "source": {
-    "git": "https://github.com/Vinoth Anandan/KKSwipeCards.git",
+    "git": "https://github.com/kkvinokk/KKSwipeCards.git",
     "tag": "0.1.0"
   },
   "platforms": {
