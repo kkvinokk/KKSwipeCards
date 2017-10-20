@@ -2,7 +2,6 @@
 
 ![Screenshot](Screens/example.gif)
 
-[![CI Status](http://img.shields.io/travis/kkvinokk/KKSwipeCards.svg?style=flat)](https://travis-ci.org/kkvinokk/KKSwipeCards)
 [![Version](https://img.shields.io/cocoapods/v/KKSwipeCards.svg?style=flat)](http://cocoapods.org/pods/KKSwipeCards)
 [![License](https://img.shields.io/cocoapods/l/KKSwipeCards.svg?style=flat)](http://cocoapods.org/pods/KKSwipeCards)
 [![Platform](https://img.shields.io/cocoapods/p/KKSwipeCards.svg?style=flat)](http://cocoapods.org/pods/KKSwipeCards)
